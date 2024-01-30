@@ -255,7 +255,7 @@ The output for this will be coming like this 200 RESPONSE
 }
 
 ```
-##Fetching Medicine Data using JWT token as auth-object
+## Fetching Medicine Data using JWT token as auth-object
 
 The format is over here :
 > Authorization: JWT <token>
