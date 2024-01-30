@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
@@ -16,6 +15,7 @@ class UserAccountManager(BaseUserManager):
         user.save()
 
         return user
+    
 
 class User(AbstractBaseUser, PermissionsMixin):
     id  = models.AutoField(primary_key=True) 
@@ -49,18 +49,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
 
-    class Meta:
-        ordering = ['-created']
-        indexes  = [models.Index(fields=['-created'])]
+    def get_full_name(self):
+        return self.first_name
+
+    def get_short_name(self):
+        return self.first_name
+    
     def __str__(self):
-        return self.user_id.username 
-
-# @receiver(post_save, sender=User)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     print(instance)
-#     if created:
-#         UserProfile.objects.create(user_id=instance , email=instance.email)
-
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.userprofile.save()
+        return self.email

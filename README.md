@@ -63,16 +63,17 @@ python3 manage.py medicine_load
 ```
 # Login and Toekn Authentication from React Side :
 
-## Registration/Sign-up 
+## Registration/Sign-up Using Djoser
 
-Just for now , username is a required param for this ( which can be handled from the Frontend --> @atiprad by making usename and email taking same input)
+Just for now , email and password are required params for this SignUp process
+(First Name and LastName , you can skip and empty string will be paseed as default value.) <<NOT RECOMMENDED>>
 
 ```json
 {
-  "username": "Patient_1", << E-mail can be passed 
-  "password": "password" ,
-  "re_password" : "password" ,
-  "email" : "patient1@gmail.com"
+  email: 'patient1@email.com',
+  'first_name': 'Patient1',
+  'last_name': 'Last1',
+  'password': 'PASSWORD_PLACEHOLDER'
 }
 ```
 The react code to signup is here :
@@ -84,11 +85,10 @@ const options = {
   "method": "POST",
   "hostname": "127.0.0.1",
   "port": "8000",
-  "path": "/api/v1/signup/",
+  "path": "/auth/users/",
   "headers": {
     "Accept": "*/*",
     "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-    "Authorization": "Bearer cdf631e10658c36c4768552a351654fe163c630e ",
     "Content-Type": "application/json"
   }
 };
@@ -107,26 +107,29 @@ const req = http.request(options, function (res) {
 });
 
 req.write(JSON.stringify({
-  username    : 'Patient_1',
-  password    : 'password',
-  re_password  : 'password',
-  email        : 'patient1@gmail.com'
-}));
+                          email: 'patient1@email.com',
+                          first_name: 'Patient1',
+                          last_name: 'Last1',
+                          password: 'bigbang13'
+                        }));
 req.end();
+
 ```
 
 ## Log-in 
 
-The Login request in react is here >>>
+The Login request in react is here >>> 
+PATH : auth/jwt/create
 
 ```node.js
+
 const http = require("http");
 
 const options = {
   "method": "POST",
   "hostname": "127.0.0.1",
   "port": "8000",
-  "path": "/api/v1/login/",
+  "path": "/auth/jwt/create/",
   "headers": {
     "Accept": "*/*",
     "Content-Type": "application/json"
@@ -146,35 +149,34 @@ const req = http.request(options, function (res) {
   });
 });
 
-req.write(JSON.stringify({username: 'superadmin', password: 1729}));
+req.write(JSON.stringify({email: 'patient1@email.com', password: 'bigbang13'}));
 req.end();
+
 ```
 
-The Login output will be containing the "TOKEN" and coming like this >>>
+The Login output will be containing the "JWT-TOKEN" and coming like this >>>
 
 ```json
 {
-  "id": 1,
-  "username": "superadmin",
-  "token": "5421781bb6d98fb75501a715873aea9d42901a17"
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwNjY5NTUwNiwiaWF0IjoxNzA2NjA5MTA2LCJqdGkiOiJiOTAwNWUxNTg5ZTY0NmJjOWMyYmE1NTIxYTgyYTEyMiIsInVzZXJfaWQiOjZ9.h8DgGCTjgNkuZWAjrLekSv9gyBsNdKZ3Um2d6uT5K4M",
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NjEyNzA2LCJpYXQiOjE3MDY2MDkxMDYsImp0aSI6ImY3YWVjNDdlZWJhODRjZTA5OGNjMjQwZGRlZWM1OGZkIiwidXNlcl9pZCI6Nn0._av7Umn3pJbtHIY1Usj7ujyh4EiLnHJKXHSVVZV-yao"
 }
 ```
 
-## Getting Session User-detail (Authenticated user for now )
+## Verifying JWT Token
 
-- The Token coming from login-response will be used in this format : "Token place_your_token_here"
+- The Token coming from login-response will be used in the Payload now : "Token place_your_token_here"
 ```node.js
 const http = require("http");
 
 const options = {
-  "method": "GET",
+  "method": "POST",
   "hostname": "127.0.0.1",
   "port": "8000",
-  "path": "/api/v1/current_user/",
+  "path": "/auth/jwt/verify/",
   "headers": {
     "Accept": "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-    "Authorization": "Token 5421781bb6d98fb75501a715873aea9d42901a17" // TOKEN PLACEHOLDER IS HERE
+    "Content-Type": "application/json"
   }
 };
 
@@ -191,23 +193,109 @@ const req = http.request(options, function (res) {
   });
 });
 
+req.write(JSON.stringify({
+  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NjEyNzA2LCJpYXQiOjE3MDY2MDkxMDYsImp0aSI6ImY3YWVjNDdlZWJhODRjZTA5OGNjMjQwZGRlZWM1OGZkIiwidXNlcl9pZCI6Nn0._av7Umn3pJbtHIY1Usj7ujyh4EiLnHJKXHSVVZV-yao'
+}));
 req.end();
 ```
 
-The output for this will be coming like this :
+The output for this will be coming like this 200 RESPONSE
 
 - The 'id' will be necessary we have to filer the alloted appointements for a user (Doctor).
 
 ```json
-{
-  "id": 1,
-  "username": "superadmin",
-  "email": "superadmin@gmail.com",
-  "first_name": "Firstname",
-  "last_name": "Lastname"
-}
+{ }
 ```
-# ! TODO : WATCH-TOWER for the Admin
+
+## Refreshing JWT Token
+
+- The Refresh Token coming from login-response will be used in the Payload now : "place_your_token_here"
+```node.js
+const http = require("http");
+
+const options = {
+  "method": "POST",
+  "hostname": "127.0.0.1",
+  "port": "8000",
+  "path": "/auth/jwt/refresh/",
+  "headers": {
+    "Accept": "*/*",
+    "Content-Type": "application/json"
+  }
+};
+
+const req = http.request(options, function (res) {
+  const chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.write(JSON.stringify({
+  refresh: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwNjY5NTUwNiwiaWF0IjoxNzA2NjA5MTA2LCJqdGkiOiJiOTAwNWUxNTg5ZTY0NmJjOWMyYmE1NTIxYTgyYTEyMiIsInVzZXJfaWQiOjZ9.h8DgGCTjgNkuZWAjrLekSv9gyBsNdKZ3Um2d6uT5K4M'
+}));
+req.end();
+
+```
+
+The output for this will be coming like this 200 RESPONSE
+
+- The 'id' will be necessary we have to filer the alloted appointements for a user (Doctor).
+
+```json
+
+{
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NjEzNDcyLCJpYXQiOjE3MDY2MDkxMDYsImp0aSI6ImUzYjI0MGM3YzgyMjRkNDViMjNjY2NjMThhMmFiYWE4IiwidXNlcl9pZCI6Nn0.Wd4erYmUnzTBbrrp6qM-2K2rlsCR-tAaBuop8ik9chs"
+}
+
+```
+##Fetching Medicine Data using JWT token as auth-object
+
+The format is over here :
+> Authorization: JWT <token>
+
+```node.js
+const http = require("http");
+
+const options = {
+  "method": "GET",
+  "hostname": "127.0.0.1",
+  "port": "8000",
+  "path": "/api/v1/medicine-master/",
+  "headers": {
+    "Accept": "*/*",
+    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+    "Authorization": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NjEzNDcyLCJpYXQiOjE3MDY2MDkxMDYsImp0aSI6ImUzYjI0MGM3YzgyMjRkNDViMjNjY2NjMThhMmFiYWE4IiwidXNlcl9pZCI6Nn0.Wd4erYmUnzTBbrrp6qM-2K2rlsCR-tAaBuop8ik9chs",
+    "Content-Type": "application/json"
+  }
+};
+
+const req = http.request(options, function (res) {
+  const chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.write(JSON.stringify({
+  token: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NjEzNDcyLCJpYXQiOjE3MDY2MDkxMDYsImp0aSI6ImUzYjI0MGM3YzgyMjRkNDViMjNjY2NjMThhMmFiYWE4IiwidXNlcl9pZCI6Nn0.Wd4erYmUnzTBbrrp6qM-2K2rlsCR-tAaBuop8ik9chs'
+}));
+req.end();
+```
+
+
 
 
 
