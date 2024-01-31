@@ -1,4 +1,4 @@
-#!/home/buddhiraj/Documents/SigmaAnalytics/Medi-Manager-Backend/.env/bin/python3
+#!/home/buddhiraj/Documents/SigmaAnalytics/projects/medi_manager_backend_JWT/Medi-Manager-Backend/.env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

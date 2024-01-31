@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
+from .views import UserViewSet
 # from .views import UserProfileViewSet, UserViewSet, user_login, register, dashboard, edit, user_logout
 # from .views import  (user_login_api ,
 #                         current_user_detail , 
@@ -10,11 +11,10 @@ from rest_framework.routers import SimpleRouter
 #                         get_active_users)
 
 router = SimpleRouter()
-# router.register('', UserProfileViewSet)
-# router.register('', UserViewSet)
+router.register('', UserViewSet)
 
 urlpatterns = [
-    path('api/v1/user/', include(router.urls)),
+    path('', include(router.urls)),
     # path('dashboard/',  dashboard,  name='dashboard'),
     # path('signin/',     register,   name='register'),
     # path('edit_user/',  edit,       name='edit'),

@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/buddhiraj/Documents/SigmaAnalytics/Medi-Manager-Backend/.env"
+set -gx VIRTUAL_ENV "/home/buddhiraj/Documents/SigmaAnalytics/projects/medi_manager_backend_JWT/Medi-Manager-Backend/.env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
