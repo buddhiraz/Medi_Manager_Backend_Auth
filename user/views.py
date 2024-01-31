@@ -2,13 +2,13 @@
 # from django.http import HttpResponse
 # from django.contrib.auth import authenticate, login, logout
 # from django.contrib.auth.decorators import login_required
-# from django.contrib import messages
-# from rest_framework import viewsets
-# from rest_framework.views import APIView
-# from .models import UserProfile
-# from rest_framework.permissions import IsAuthenticated
+from django.contrib import messages
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from .models import User as The_User
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserSerializer
 # from .forms import LoginForm, UserRegistrationForm, UserEditForm
-# from .serializers import UserProfileSerializer
 # from django.views.decorators.csrf import csrf_exempt
 # from rest_framework.permissions import AllowAny , IsAuthenticated
 # from rest_framework.decorators import api_view, permission_classes
@@ -18,10 +18,10 @@
 
 
 
-# # API views
-# class UserProfileViewSet(viewsets.ModelViewSet):
-#     queryset = UserProfile.objects.all()
-#     serializer_class = UserProfileSerializer
+# API views
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = The_User.objects.all()
+    serializer_class = UserSerializer
 
 
 

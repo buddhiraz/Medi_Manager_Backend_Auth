@@ -25,8 +25,8 @@ class Appointment(models.Model):
                                         choices     =   [(status.value, status.name) for status in APPOINTMENT_STATUSES],
                                         default     =   'CR',
                                     )
-    doctor_id       = models.IntegerField(blank=True)
-    patient_id      = models.ForeignKey(User, on_delete=models.PROTECT)
+    doctor_id       = models.IntegerField(blank=True,null=True)
+    patient_id      = models.ForeignKey(User, on_delete=models.CASCADE)
     specialization_id  = models.ForeignKey(Specialization, on_delete=models.PROTECT)
 
     created_by      = models.CharField(max_length = 50, blank=True)

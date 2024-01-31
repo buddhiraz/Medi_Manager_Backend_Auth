@@ -43,7 +43,7 @@ urlpatterns = [
     path('api/v1/symptom-master/',          include('symptom_master.urls')),
     path('api/v1/template-master/',         include('template_master.urls')),
     path('api/v1/test-report/',             include('test_report.urls')),
-    path('' ,                   include('user.urls')),
+    path('api/v1/user/' ,                   include('user.urls')),
     path('api/v1/user-entity-mapping/' ,    include('user_entity_mapping.urls')),
     path('api/v1/user-specialization-procedure/', include('user_specialization_procedure_mapping.urls')),
     path('api/v1/user-role-mapping/' ,      include('user_role_mapping.urls')),

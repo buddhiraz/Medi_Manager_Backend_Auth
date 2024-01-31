@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/buddhiraj/Documents/SigmaAnalytics/Medi-Manager-Backend/.env"
+VIRTUAL_ENV="/home/buddhiraj/Documents/SigmaAnalytics/projects/medi_manager_backend_JWT/Medi-Manager-Backend/.env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

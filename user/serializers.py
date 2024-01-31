@@ -1,5 +1,8 @@
 from djoser.serializers import UserCreateSerializer
 from django.contrib.auth import get_user_model
+
+from rest_framework import serializers
+from .models import User as The_User
 User = get_user_model()
 
 
@@ -27,4 +30,12 @@ class UserCreateSerializer(UserCreateSerializer):
                     restricted_fields = set(self.fields) - desired_fields
                     for field_name in restricted_fields:
                         self.fields.pop(field_name)
+
+
+ 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = The_User
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'aadhar', 'address', 'postal_code']
+
 
